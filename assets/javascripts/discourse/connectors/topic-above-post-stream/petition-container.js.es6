@@ -19,5 +19,13 @@ export default {
       const petitionEnabled = topic ? enabled(topic) : false;
       component.set('petitionEnabled', petitionEnabled);
     });
+
+    // Petition container element has to appear after
+    // topic-title-voting (Discourse Voting) for petition styles to work
+    Ember.run.scheduleOnce('afterRender', () => {
+      const $petition = $('.petition-container');
+      const $container = $petition.parent();
+      $petition.appendTo($container);
+    });
   }
 };
