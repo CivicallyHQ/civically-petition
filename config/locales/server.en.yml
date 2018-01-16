@@ -1,0 +1,17 @@
+en:
+  petition:
+    status:
+      accepted: "Accepted"
+      rejected: "Rejected"
+      open: "Opened"
+
+  system_messages:
+    petition_status_changed:
+      title: "\"%{title}\" petition has been %{status}"
+      subject_template: "\"%{title}\" petition has been %{status}"
+      text_body_template: |
+        A petition you voted for has been %{status}.
+
+        "%{title}" was %{status} on %{time}.
+
+        Go to the [%{title} topic](%{url}) to learn more.

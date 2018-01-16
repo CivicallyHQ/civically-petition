@@ -1,0 +1,40 @@
+<div class="petition-info">
+  <span>
+    <label>{{i18n 'petition.status.label'}}:</label>
+    {{petition-status topic.petition_status}}
+  </span>
+</div>
+<div class="content">
+  {{#if showMessage}}
+    {{message}}
+  {{/if}}
+  {{#if showAction}}
+    <div class="user-actions">
+      {{d-button class="btn btn-primary" action="action" label=actionLabel icon=actionIcon}}
+    </div>
+  {{/if}}
+</div>
+{{#if canUpdateStatus}}
+  <div class="petition-staff-actions">
+    {{#if showInvalidResolution}}
+      <div class="invalid-resolution">
+        <label>{{i18n 'petition.invalid_resolution'}}</label>
+        {{input type="checkbox" checked=forceResolution}}
+        <span>{{i18n 'petition.force_resolution'}}</span>
+      </div>
+    {{/if}}
+    {{#if showAccepted}}
+      {{d-button action="updatePetitionStatus" actionParam='accepted' label="petition.accept" class="btn btn-success" icon="check"}}
+    {{/if}}
+    {{#if showRejected}}
+      {{d-button action="updatePetitionStatus" actionParam='rejected' label="petition.reject" class="btn btn-danger" icon="times"}}
+    {{/if}}
+    {{#if showOpen}}
+      {{d-button action="updatePetitionStatus" actionParam='open' label="petition.open" class="btn btn-default" icon="circle-o"}}
+    {{/if}}
+    {{#if showResolutionAction}}
+      {{d-button action="resolve" label='petition.resolve' class='btn btn-primary' icon="dot-circle-o" disabled=loading}}
+      {{conditional-loading-spinner condition=loading size='small'}}
+    {{/if}}
+  </div>
+{{/if}}

@@ -1,0 +1,88 @@
+.topic-title-voting .voting {
+  margin: 0 20px;
+  padding: 20px 0 15px;
+}
+
+.petition-controls {
+  min-height: 70px;
+  padding: 20px;
+
+  .user-actions {
+    padding-bottom: 10px;
+  }
+
+  .petition-staff-actions {
+    clear: both;
+
+    .invalid-resolution {
+      label {
+        color: $danger;
+      }
+    }
+  }
+}
+
+.petition-status {
+  display: inline-block;
+
+  &.open {
+    color: $tertiary;
+  }
+
+  &.limited {
+    color: $highlight;
+  }
+
+  &.rejected {
+    color: $danger;
+  }
+
+  &.accepted {
+    color: $success;
+  }
+}
+
+.petition-info {
+  font-size: 16px;
+
+  span {
+    margin-right: 10px;
+  }
+
+  label {
+    display: inline-block;
+  }
+}
+
+.similar-petitions {
+  width: 550px;
+  margin-top: 20px;
+
+  .similar-petition-links {
+    border: 2px solid $tertiary;
+    margin: 0;
+    list-style: none;
+    padding: 10px 20px;
+
+    li {
+      line-height: 40px;
+
+      > * {
+        display: inline-block;
+      }
+
+      a {
+        margin-right: 10px;
+        line-height: 30px;
+      }
+    }
+  }
+}
+
+.resolution-message {
+  display: block;
+}
+
+.resolution-link {
+  display: inline-block;
+}

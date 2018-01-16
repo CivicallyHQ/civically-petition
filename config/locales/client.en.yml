@@ -1,0 +1,45 @@
+en:
+  js:
+    filters:
+      petitions:
+        title: "Petitions"
+        help: "List latest petitions."
+    notifications:
+      alt:
+        petition:
+          notification:
+            accepted: "Accepted"
+            rejected: "Rejected"
+            open: "Open"
+    petition:
+      category:
+        label: "Category is used for petitions"
+        vote_threshold: "Vote threshold for petitions in this category"
+      invite: "Invite people to vote"
+      remove: "remove petition"
+      accept: "Accept Petition"
+      reject: "Reject Petition"
+      open: "Open Petition"
+      resolve: "Resolve Petition"
+      invalid_resolution: "This petition has a decision, but has not met its voting threshold."
+      force_resolution: "Force petition resolution."
+      resolved: "This petition has been resolved."
+      status:
+        label: "Status"
+      place:
+        label: "place"
+      message:
+        petitioner: "Thanks for starting a petition!"
+        user: "You can support this petition by clicking 'Vote'."
+        guest: "You need to be logged in to support this petition."
+      notification:
+        accepted: "{{description}}"
+        rejected: "{{description}}"
+        open: "{{description}}"
+      resolution:
+        message: "See more"
+      similar:
+        title: "Petitions"
+        identical: "Identical"
+        no_results: "No similar petitions"
+        invalid: "There is an identical petition"
