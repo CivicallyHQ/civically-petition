@@ -44,8 +44,14 @@ export default Ember.Component.extend({
     return message;
   },
 
-  showMessage: Ember.computed.notEmpty('message'),
+  @computed('topic.user_voted')
+  actionClasses(userVoted) {
+    let classes = "btn";
+    if (userVoted) classes += " btn-primary";
+    return classes;
+  },
 
+  showMessage: Ember.computed.notEmpty('message'),
   showAction: Ember.computed.bool('topic.details.can_invite_via_email'),
   actionLabel: 'petition.invite',
   actionIcon: 'group',

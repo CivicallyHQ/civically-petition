@@ -6,11 +6,11 @@
 </div>
 <div class="content">
   {{#if showMessage}}
-    {{message}}
+    <div class="petition-message">{{message}}</div>
   {{/if}}
   {{#if showAction}}
     <div class="user-actions">
-      {{d-button class="btn btn-primary" action="action" label=actionLabel icon=actionIcon}}
+      {{d-button class=actionClasses action="action" label=actionLabel icon=actionIcon}}
     </div>
   {{/if}}
 </div>

@@ -5,11 +5,7 @@
 
 .petition-controls {
   min-height: 70px;
-  padding: 20px;
-
-  .user-actions {
-    padding-bottom: 10px;
-  }
+  padding: 15px;
 
   .petition-staff-actions {
     clear: both;
@@ -40,6 +36,10 @@
   &.accepted {
     color: $success;
   }
+}
+
+.petition-message {
+  margin-bottom: 10px;
 }
 
 .petition-info {
