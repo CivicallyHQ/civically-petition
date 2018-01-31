@@ -32,15 +32,39 @@ export default Ember.Component.extend({
   @computed('topic.petition_status')
   showOpen: (status) => status !== 'open',
 
-  @computed('topic.user_voted', 'topic.closed')
-  message(voted, closed) {
+  @computed('topic.vote_count', 'topic.petition_vote_threshold')
+  remainingVotes(count, total) {
+    return total - count;
+  },
+
+  @computed('topic.user_voted', 'topic.closed', 'remainingVotes')
+  message(voted, closed, remaining) {
     if (closed) return I18n.t('petition.resolved');
+
     const topic = this.get('topic');
     const user = this.get('currentUser');
     let message = I18n.t('petition.message.guest');
-    if (user) message = I18n.t('petition.message.user');
-    if (voted) message = null;
-    if (user && user.id === topic.user_id) message = I18n.t('petition.message.petitioner');
+
+    let remainingMsg;
+    if (remaining > 0) {
+      remainingMsg = remaining > 1 ? I18n.t('petition.message.remaining.multiple', { remaining }) :
+                                     I18n.t('petition.message.remaining.single', { remaining });
+    }
+
+    if (user) {
+      message = I18n.t('petition.message.user.no_vote');
+      if (voted) {
+        message = `${I18n.t('petition.message.user.vote')} <b>${remainingMsg}</b>`;
+      }
+    }
+
+    if (user && user.id === topic.user_id) {
+      message = I18n.t('petition.message.petitioner.no_vote');
+      if (voted) {
+        message = `${I18n.t('petition.message.petitioner.vote')} <b>${remainingMsg}</b>`;
+      }
+    }
+
     return message;
   },
 

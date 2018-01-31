@@ -29,8 +29,15 @@ en:
       place:
         label: "place"
       message:
-        petitioner: "Thanks for starting a petition!"
-        user: "You can support this petition by clicking 'Vote'."
+        remaining:
+          multiple: "We need {{remaining}} more votes."
+          single: "We need 1 more vote."
+        petitioner:
+          no_vote: "First, vote for your own petition."
+          vote: "Now share this petition with your friends."
+        user:
+          no_vote: "Support this petition by clicking 'Vote'."
+          vote: "Now share this petition with your friends."
         guest: "You need to be logged in to support this petition."
       notification:
         accepted: "{{description}}"
