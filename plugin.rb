@@ -65,8 +65,8 @@ after_initialize do
       self.custom_fields['petition']
     end
 
-    def petition_type
-      self.custom_fields['petition_type']
+    def petition_id
+      self.custom_fields['petition_id']
     end
 
     def petition_status

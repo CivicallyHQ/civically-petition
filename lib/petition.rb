@@ -3,12 +3,12 @@ class CivicallyPetition::Petition
     @resolutions ||= []
   end
 
-  def self.add_resolution(type, &block)
-    resolutions << { type: type, block: block }
+  def self.add_resolution(id, &block)
+    resolutions << { id: id, block: block }
   end
 
   def self.resolve(topic, forced)
-    resolution = @resolutions.select { |r| r[:type] === topic.petition_type }.first
+    resolution = @resolutions.select { |r| r[:id] === topic.petition_id }.first
     if resolution && resolution[:block]
       resolution[:block].call(topic, forced)
     else

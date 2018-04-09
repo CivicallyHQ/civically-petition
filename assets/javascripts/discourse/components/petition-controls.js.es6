@@ -5,6 +5,8 @@ import { getOwner } from 'discourse-common/lib/get-owner';
 export default Ember.Component.extend({
   classNames: ['petition-controls'],
   showResolutionAction: Ember.computed.or('resolutionIsValid', 'forceResolution'),
+  showResolution: false,
+  showPoints: false,
 
   @computed('topic.vote_count', 'topic.petition_vote_threshold')
   reachedThreshold: (count, threshold) => count >= threshold,
@@ -80,6 +82,16 @@ export default Ember.Component.extend({
   actionLabel: 'petition.invite',
   actionIcon: 'group',
 
+  @computed('topic.petition_id')
+  pointsInfo(petitionId) {
+    return I18n.t(`petition.${petitionId}.points`);
+  },
+
+  @computed('topic.petition_id')
+  resolutionInfo(petitionId) {
+    return I18n.t(`petition.${petitionId}.resolution`);
+  },
+
   actions: {
     updatePetitionStatus(status) {
       const topic = this.get('topic');
@@ -113,6 +125,10 @@ export default Ember.Component.extend({
     action() {
       const topicRoute = getOwner(this).lookup('route:topic');
       topicRoute.send('showInvite');
+    },
+
+    togglePopover(type) {
+      this.toggleProperty(`show${type}`);
     }
   }
 });

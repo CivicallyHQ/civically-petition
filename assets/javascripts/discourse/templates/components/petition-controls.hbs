@@ -1,8 +1,28 @@
 <div class="petition-info">
-  <span>
+  <span class="status">
     <label>{{i18n 'petition.status.label'}}:</label>
     {{petition-status topic.petition_status}}
   </span>
+  {{#if hasPointsInfo}}
+    <span class="points">
+      {{d-button class="btn-small" action="togglePopover" actionParam='Points'}}
+      {{#if showPointsInfo}}
+        <div class="petition-popover">
+          {{pointsInfo}}
+        </div>
+      {{/if}}
+    </span>
+  {{/if}}
+  {{#if hasResolutionInfo}}
+    <span class="resolution">
+      {{d-button class="btn-small" action="togglePopover" actionParam='Resolution'}}
+      {{#if showResolutionInfo}}
+        <div class="petition-popover">
+          {{resolutionInfo}}
+        </div>
+      {{/if}}
+    </span>
+  {{/if}}
 </div>
 <div class="content">
   {{#if showMessage}}
