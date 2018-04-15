@@ -43,6 +43,7 @@ en:
         accepted: "{{description}}"
         rejected: "{{description}}"
         open: "{{description}}"
+      info: "More Info"
       resolution:
         message: "See more"
       similar:

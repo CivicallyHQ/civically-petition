@@ -1,0 +1,9 @@
+{{d-button class="btn btn-small"
+           icon="info-circle"
+           label='petition.info'
+           action="toggleInfo"}}
+{{#if showInfo}}
+  <div class="petition-popover">
+    {{info}}
+  </div>
+{{/if}}

@@ -3,26 +3,9 @@
     <label>{{i18n 'petition.status.label'}}:</label>
     {{petition-status topic.petition_status}}
   </span>
-  {{#if hasPointsInfo}}
-    <span class="points">
-      {{d-button class="btn-small" action="togglePopover" actionParam='Points'}}
-      {{#if showPointsInfo}}
-        <div class="petition-popover">
-          {{pointsInfo}}
-        </div>
-      {{/if}}
-    </span>
-  {{/if}}
-  {{#if hasResolutionInfo}}
-    <span class="resolution">
-      {{d-button class="btn-small" action="togglePopover" actionParam='Resolution'}}
-      {{#if showResolutionInfo}}
-        <div class="petition-popover">
-          {{resolutionInfo}}
-        </div>
-      {{/if}}
-    </span>
-  {{/if}}
+  <span class="info">
+    {{petition-info topic=topic}}
+  </span>
 </div>
 <div class="content">
   {{#if showMessage}}
@@ -30,7 +13,10 @@
   {{/if}}
   {{#if showAction}}
     <div class="user-actions">
-      {{d-button class=actionClasses action="action" label=actionLabel icon=actionIcon}}
+      {{d-button class=actionClasses
+                 action="action"
+                 label=actionLabel
+                 icon=actionIcon}}
     </div>
   {{/if}}
 </div>
@@ -44,16 +30,32 @@
       </div>
     {{/if}}
     {{#if showAccepted}}
-      {{d-button action="updatePetitionStatus" actionParam='accepted' label="petition.accept" class="btn btn-success" icon="check"}}
+      {{d-button action="updatePetitionStatus"
+                 actionParam="accepted"
+                 label="petition.accept"
+                 class="btn btn-success"
+                 icon="check"}}
     {{/if}}
     {{#if showRejected}}
-      {{d-button action="updatePetitionStatus" actionParam='rejected' label="petition.reject" class="btn btn-danger" icon="times"}}
+      {{d-button action="updatePetitionStatus"
+                 actionParam="rejected"
+                 label="petition.reject"
+                 class="btn btn-danger"
+                 icon="times"}}
     {{/if}}
     {{#if showOpen}}
-      {{d-button action="updatePetitionStatus" actionParam='open' label="petition.open" class="btn btn-default" icon="circle-o"}}
+      {{d-button action="updatePetitionStatus"
+                 actionParam="open"
+                 label="petition.open"
+                 class="btn btn-default"
+                 icon="circle-o"}}
     {{/if}}
     {{#if showResolutionAction}}
-      {{d-button action="resolve" label='petition.resolve' class='btn btn-primary' icon="dot-circle-o" disabled=loading}}
+      {{d-button action="resolve"
+                 label="petition.resolve"
+                 class="btn btn-primary"
+                 icon="dot-circle-o"
+                 disabled=loading}}
       {{conditional-loading-spinner condition=loading size='small'}}
     {{/if}}
   </div>

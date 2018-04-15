@@ -36,6 +36,7 @@ after_initialize do
 
   Topic.register_custom_field_type('petition', :boolean)
   add_to_serializer(:topic_view, :petition) { object.topic.petition }
+  add_to_serializer(:topic_view, :petition_id) { object.topic.petition_id }
   add_to_serializer(:topic_view, :petition_status) { object.topic.petition_status }
   add_to_serializer(:topic_view, :include_petition_status?) { object.topic.petition_status.present? }
   add_to_serializer(:topic_view, :petition_vote_threshold) { object.topic.petition_vote_threshold }

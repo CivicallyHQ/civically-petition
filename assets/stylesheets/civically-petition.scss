@@ -51,12 +51,24 @@
 .petition-info {
   font-size: 16px;
 
-  span {
+  > span {
     margin-right: 10px;
+    position: relative;
   }
 
   label {
     display: inline-block;
+    margin: 0;
+  }
+
+  .info {
+    position: absolute;
+    right: 6px;
+    top: 16px;
+
+    button {
+      margin: 0;
+    }
   }
 }
 
@@ -91,4 +103,27 @@
 
 .resolution-link {
   display: inline-block;
+}
+
+.petition-info {
+  display: inline-block;
+}
+
+.petition-popover {
+  position: absolute;
+  background-color: $secondary;
+  z-index: 10;
+  right: 0;
+  width: 300px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+  border: 1px solid $primary-low;
+  padding: 4px 12px;
+
+  p {
+    margin: 7px 0;
+  }
+
+  ul li {
+    margin: 7px 0;
+  }
 }
