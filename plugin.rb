@@ -34,16 +34,16 @@ after_initialize do
   add_to_serializer(:basic_category, :petition_enabled) { object.custom_fields['petition_enabled'] }
   add_to_serializer(:basic_category, :petition_vote_threshold) { object.petition_vote_threshold }
 
-  Topic.register_custom_field_type('petition', :boolean)
-  add_to_serializer(:topic_view, :petition) { object.topic.petition }
+  Topic.register_custom_field_type('petition_vote_threshold', :integer)
   add_to_serializer(:topic_view, :petition_id) { object.topic.petition_id }
+  add_to_serializer(:topic_view, :include_petition_id) { object.topic.is_petition }
   add_to_serializer(:topic_view, :petition_status) { object.topic.petition_status }
-  add_to_serializer(:topic_view, :include_petition_status?) { object.topic.petition_status.present? }
+  add_to_serializer(:topic_view, :include_petition_status?) { object.topic.is_petition }
   add_to_serializer(:topic_view, :petition_vote_threshold) { object.topic.petition_vote_threshold }
-  add_to_serializer(:topic_view, :include_petition_vote_threshold?) { object.topic.petition_vote_threshold.present? }
+  add_to_serializer(:topic_view, :include_petition_vote_threshold?) { object.topic.is_petition }
 
   add_to_serializer(:topic_list_item, :petition_status) { object.petition_status }
-  add_to_serializer(:topic_list_item, :include_petition_status?) { object.petition_status.present? }
+  add_to_serializer(:topic_list_item, :include_petition_status?) { object.is_petition }
   TopicList.preloaded_custom_fields << "petition_status" if TopicList.respond_to? :preloaded_custom_fields
 
   load File.expand_path('../jobs/petition_status_changed.rb', __FILE__)
@@ -61,9 +61,10 @@ after_initialize do
     end
   end
 
+  require_dependency 'topic'
   class ::Topic
-    def petition
-      self.custom_fields['petition']
+    def is_petition
+      self.subtype === 'petition'
     end
 
     def petition_id
@@ -103,10 +104,7 @@ after_initialize do
   class ::TopicQuery
     def list_petitions
       create_list(:petitions, ascending: 'true') do |topics|
-        topics = topics.joins("INNER JOIN topic_custom_fields
-                               ON topic_custom_fields.topic_id = topics.id
-                               AND topic_custom_fields.name = 'petition'")
-        topics
+        topics.where(subtype: 'petition')
       end
     end
   end

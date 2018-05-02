@@ -7,7 +7,7 @@ export default {
       if (topic.category &&
          (topic.id !== topic.category.topic_id) &&
          topic.category.petition_enabled) return true;
-      return topic.petition;
+      return topic.subtype === 'petition';
     };
 
     component.set('petitionEnabled', enabled(attrs.model));

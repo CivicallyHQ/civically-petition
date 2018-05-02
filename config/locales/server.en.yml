@@ -4,6 +4,9 @@ en:
       accepted: "Accepted"
       rejected: "Rejected"
       open: "Opened"
+    error:
+      title: "A petition must have a title"
+      id: "A petition must have an id"
 
   system_messages:
     petition_status_changed:

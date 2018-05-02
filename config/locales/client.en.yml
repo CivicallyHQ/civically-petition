@@ -20,10 +20,7 @@ en:
       accept: "Accept Petition"
       reject: "Reject Petition"
       open: "Open Petition"
-      resolve: "Resolve Petition"
-      invalid_resolution: "This petition has a decision, but has not met its voting threshold."
-      force_resolution: "Force petition resolution."
-      resolved: "This petition has been resolved."
+      closed: "Peition Closed"
       status:
         label: "Status"
       place:
@@ -43,9 +40,11 @@ en:
         accepted: "{{description}}"
         rejected: "{{description}}"
         open: "{{description}}"
-      info: "More Info"
       resolution:
-        message: "See more"
+        action: "Resolve Petition"
+        force: "Force petition resolution."
+        invalid: "This petition has a decision, but has not met its voting threshold."
+        info: "Resolution"
       similar:
         title: "Petitions"
         identical: "Identical"

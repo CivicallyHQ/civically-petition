@@ -41,7 +41,7 @@ export default Ember.Component.extend({
 
   @computed('topic.user_voted', 'topic.closed', 'remainingVotes')
   message(voted, closed, remaining) {
-    if (closed) return I18n.t('petition.resolved');
+    if (closed) return I18n.t('petition.closed');
 
     const topic = this.get('topic');
     const user = this.get('currentUser');

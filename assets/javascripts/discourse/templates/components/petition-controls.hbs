@@ -1,32 +1,32 @@
-<div class="petition-info">
+<div class="petition-header">
   <span class="status">
     <label>{{i18n 'petition.status.label'}}:</label>
     {{petition-status topic.petition_status}}
   </span>
-  <span class="info">
-    {{petition-info topic=topic}}
-  </span>
 </div>
-<div class="content">
+<div class="peition-content">
   {{#if showMessage}}
-    <div class="petition-message">{{{message}}}</div>
+    <div class="petition-message">
+      <span>{{{message}}}</span>
+    </div>
   {{/if}}
   {{#if showAction}}
-    <div class="user-actions">
+    <div class="petition-actions">
       {{d-button class=actionClasses
                  action="action"
                  label=actionLabel
                  icon=actionIcon}}
     </div>
   {{/if}}
+  {{petition-info topic=topic}}
 </div>
 {{#if canUpdateStatus}}
   <div class="petition-staff-actions">
     {{#if showInvalidResolution}}
       <div class="invalid-resolution">
-        <label>{{i18n 'petition.invalid_resolution'}}</label>
+        <label>{{i18n 'petition.resolution.invalid'}}</label>
         {{input type="checkbox" checked=forceResolution}}
-        <span>{{i18n 'petition.force_resolution'}}</span>
+        <span>{{i18n 'petition.resolution.force'}}</span>
       </div>
     {{/if}}
     {{#if showAccepted}}
@@ -52,7 +52,7 @@
     {{/if}}
     {{#if showResolutionAction}}
       {{d-button action="resolve"
-                 label="petition.resolve"
+                 label="petition.resolution.action"
                  class="btn btn-primary"
                  icon="dot-circle-o"
                  disabled=loading}}
