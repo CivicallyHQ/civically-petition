@@ -1,15 +1,10 @@
-<div class="petition-header">
-  <span class="status">
-    <label>{{i18n 'petition.status.label'}}:</label>
-    {{petition-status topic.petition_status}}
-  </span>
-</div>
 <div class="peition-content">
   {{#if showMessage}}
     <div class="petition-message">
-      <span>{{{message}}}</span>
+      {{cookedMessage}}
     </div>
   {{/if}}
+  {{petition-status topic.petition_status}}
   {{#if showAction}}
     <div class="petition-actions">
       {{d-button class=actionClasses
@@ -18,7 +13,9 @@
                  icon=actionIcon}}
     </div>
   {{/if}}
-  {{petition-info topic=topic}}
+  {{#if showInfo}}
+    {{petition-info topic=topic}}
+  {{/if}}
 </div>
 {{#if canUpdateStatus}}
   <div class="petition-staff-actions">

@@ -1,5 +1,6 @@
-import { default as computed, observes } from 'ember-addons/ember-computed-decorators';
+import { default as computed, observes, on } from 'ember-addons/ember-computed-decorators';
 import { setPetitionStatus, resolvePetition } from '../lib/petition-utilities';
+import { cookAsync } from 'discourse/lib/text';
 import { getOwner } from 'discourse-common/lib/get-owner';
 
 export default Ember.Component.extend({
@@ -39,35 +40,63 @@ export default Ember.Component.extend({
     return total - count;
   },
 
-  @computed('topic.user_voted', 'topic.closed', 'remainingVotes')
-  message(voted, closed, remaining) {
-    if (closed) return I18n.t('petition.closed');
+  @computed('topic.petition_messages')
+  showInfo(customMessages) {
+    return customMessages && customMessages['info'];
+  },
 
-    const topic = this.get('topic');
-    const user = this.get('currentUser');
-    let message = I18n.t('petition.message.guest');
+  getMessage(userType, type = 'all') {
+    const customMessages = this.get('topic.petition_messages');
+    let message = I18n.t(`petition.message.${userType}.${type}`);
 
-    let remainingMsg;
-    if (remaining > 0) {
-      remainingMsg = remaining > 1 ? I18n.t('petition.message.remaining.multiple', { remaining }) :
-                                     I18n.t('petition.message.remaining.single', { remaining });
-    }
-
-    if (user) {
-      message = I18n.t('petition.message.user.no_vote');
-      if (voted) {
-        message = `${I18n.t('petition.message.user.vote')} <b>${remainingMsg}</b>`;
-      }
-    }
-
-    if (user && user.id === topic.user_id) {
-      message = I18n.t('petition.message.petitioner.no_vote');
-      if (voted) {
-        message = `${I18n.t('petition.message.petitioner.vote')} <b>${remainingMsg}</b>`;
-      }
+    if (customMessages && customMessages[userType] && customMessages[userType][type]) {
+      message = customMessages[userType][type];
     }
 
     return message;
+  },
+
+  @on('didInsertElement')
+  @observes('topic.user_voted', 'topic.closed', 'remainingVotes')
+  setMessage() {
+    const closed = this.get('topic.closed');
+    const user = this.get('currentUser');
+    let message;
+
+    if (closed) {
+      message = I18n.t('petition.closed');
+    } else if (user) {
+      const topic = this.get('topic');
+      const voted = this.get('topic.user_voted');
+
+      let userType = user.id === topic.user_id ? 'petitioner' : 'user';
+
+      message = this.getMessage(userType, 'no_vote');
+
+      if (voted) {
+        message = this.getMessage(userType, 'vote');
+
+        let remainingMsg = this.remainingMsg();
+        if (remainingMsg) message += ` ${remainingMsg}`;
+      }
+    } else {
+      message = this.getMessage('guest');
+    }
+
+    cookAsync(message).then((cooked) => this.set('cookedMessage', cooked));
+  },
+
+  remainingMsg() {
+    const remaining = this.get('remainingVotes');
+    let remainingMsg;
+
+    if (remaining > 1) {
+      remainingMsg = I18n.t('petition.message.remaining.multiple', { remaining })
+    } else if (remaining === 1) {
+      remainingMsg = I18n.t('petition.message.remaining.single', { remaining });
+    }
+
+    return remainingMsg;
   },
 
   @computed('topic.user_voted')
@@ -77,7 +106,7 @@ export default Ember.Component.extend({
     return classes;
   },
 
-  showMessage: Ember.computed.notEmpty('message'),
+  showMessage: Ember.computed.notEmpty('cookedMessage'),
   showAction: Ember.computed.bool('topic.details.can_invite_via_email'),
   actionLabel: 'petition.invite',
   actionIcon: 'group',

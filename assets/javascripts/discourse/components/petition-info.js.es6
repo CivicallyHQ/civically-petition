@@ -23,15 +23,11 @@ export default Ember.Component.extend({
   },
 
   @observes("showInfo")
-  setPointsInfo() {
+  setInfo() {
     const showInfo = this.get('showInfo');
     if (showInfo) {
-      const topic = this.get('topic');
-      const info = I18n.t(`petition.${topic.petition_id}.info`, { placeName: topic.title });
-
-      cookAsync(info).then(cooked => {
-        this.set('info', cooked);
-      });
+      const messages = this.get('topic.petition_messages');
+      cookAsync(messages.info).then(cooked => this.set('info', cooked));
     }
   },
 

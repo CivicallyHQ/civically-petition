@@ -35,12 +35,15 @@ after_initialize do
   add_to_serializer(:basic_category, :petition_vote_threshold) { object.petition_vote_threshold }
 
   Topic.register_custom_field_type('petition_vote_threshold', :integer)
+  Topic.register_custom_field_type('petition_messages', :json)
   add_to_serializer(:topic_view, :petition_id) { object.topic.petition_id }
   add_to_serializer(:topic_view, :include_petition_id) { object.topic.is_petition }
   add_to_serializer(:topic_view, :petition_status) { object.topic.petition_status }
   add_to_serializer(:topic_view, :include_petition_status?) { object.topic.is_petition }
   add_to_serializer(:topic_view, :petition_vote_threshold) { object.topic.petition_vote_threshold }
   add_to_serializer(:topic_view, :include_petition_vote_threshold?) { object.topic.is_petition }
+  add_to_serializer(:topic_view, :petition_messages) { object.topic.petition_messages }
+  add_to_serializer(:topic_view, :include_petition_messages?) { object.topic.is_petition }
 
   add_to_serializer(:topic_list_item, :petition_status) { object.petition_status }
   add_to_serializer(:topic_list_item, :include_petition_status?) { object.is_petition }
@@ -80,6 +83,14 @@ after_initialize do
         self.custom_fields['petition_vote_threshold'].to_i
       else
         self.category && self.category.petition_vote_threshold
+      end
+    end
+
+    def petition_messages
+      if self.custom_fields['petition_messages']
+        self.custom_fields['petition_messages']
+      else
+        nil
       end
     end
 

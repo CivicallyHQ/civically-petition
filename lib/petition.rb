@@ -42,6 +42,8 @@ class CivicallyPetition::Petition
 
     custom_fields[:petition_status] = params[:status] ? params[:status] : 'open'
 
+    custom_fields[:petition_messages] = params[:messages].to_json if params[:messages]
+
     topic_params[:topic_custom_fields] = custom_fields
 
     TopicCreator.create(user, Guardian.new(user), topic_params)
