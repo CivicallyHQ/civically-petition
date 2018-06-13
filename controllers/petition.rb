@@ -1,4 +1,4 @@
-ALLOWED_PETITION_STATUSES = ['accepted', 'rejected', 'open', 'restricted']
+ALLOWED_PETITION_STATUSES = ['accepted', 'rejected', 'open', 'resolved', 'restricted']
 
 class CivicallyPetition::PetitionController < ::ApplicationController
   def set_status
@@ -14,16 +14,9 @@ class CivicallyPetition::PetitionController < ::ApplicationController
       return render json: { error: "Status is not allowed" }, status: 400
     end
 
-    topic.custom_fields['petition_status'] = params[:status]
-    if saved = topic.save!
-      Jobs.enqueue(:petition_status_changed,
-        topic_id: topic.id,
-        time: Time.now,
-        status: topic.petition_status
-      )
+    result = CivicallyPetition::Petition.update_status(topic, params[:status])
 
-      MessageBus.publish("/petition/#{topic.id}", petition_status: params[:status])
-
+    if result
       render json: success_json
     else
       render json: error_json
@@ -38,10 +31,20 @@ class CivicallyPetition::PetitionController < ::ApplicationController
     result = {}
 
     if response = CivicallyPetition::Petition.resolve(topic, params[:forced])
-      result.merge!(message: response[:message]) if response[:message]
+
+      ## Petition resolution may convert the petition topic into another subtype
+      if topic.is_petition
+        CivicallyPetition::Petition.update_status(topic, 'resolved')
+      end
+
+      result.merge!(message: response[:message]) if response.respond_to?(:message)
 
       if response[:route_to]
         MessageBus.publish("/petition/#{topic.id}", route_to: response[:route_to])
+      end
+
+      if response[:reload]
+        MessageBus.publish("/petition/#{topic.id}", reload: true)
       end
     end
 

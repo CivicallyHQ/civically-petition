@@ -12,6 +12,24 @@ class CivicallyPetition::Petition
     if resolution && resolution[:block]
       resolution[:block].call(topic, forced)
     else
+      true
+    end
+  end
+
+  def self.update_status(topic, status)
+    topic.custom_fields['petition_status'] = status
+
+    if topic.save_custom_fields(true)
+      Jobs.enqueue(:petition_status_changed,
+        topic_id: topic.id,
+        time: Time.now,
+        status: topic.petition_status
+      )
+
+      MessageBus.publish("/petition/#{topic.id}", petition_status: status)
+
+      true
+    else
       false
     end
   end
@@ -44,8 +62,15 @@ class CivicallyPetition::Petition
 
     custom_fields[:petition_messages] = params[:messages].to_json if params[:messages]
 
+    custom_fields[:petition_vote_threshold] = params[:vote_threshold].to_i if params[:vote_threshold]
+
     topic_params[:topic_custom_fields] = custom_fields
 
     TopicCreator.create(user, Guardian.new(user), topic_params)
+  end
+
+  def self.find(petition_id)
+    Topic.joins("LEFT JOIN topic_custom_fields ON topics.id = topic_custom_fields.topic_id")
+      .where("topic_custom_fields.name = 'petition_id' AND topic_custom_fields.value = ?", petition_id.to_s)
   end
 end

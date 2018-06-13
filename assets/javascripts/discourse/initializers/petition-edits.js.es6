@@ -66,6 +66,10 @@ export default {
             if (data.route_to) {
               document.location.href = Discourse.getURL(data.route_to);
             }
+
+            if (data.reload) {
+              location.reload();
+            }
           });
         }
       }

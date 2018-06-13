@@ -20,24 +20,26 @@ en:
       accept: "Accept Petition"
       reject: "Reject Petition"
       open: "Open Petition"
-      closed: "Peition Closed"
       status:
         label: "Status"
       place:
         label: "place"
       info: "More Info"
       message:
+        decision: "This petition has been {{status}}. A moderator will resolve it shortly."
+        resolved: "This petition is resolved."
+        closed: "This petition is closed."
         remaining:
           multiple: "We need {{remaining}} more votes."
           single: "We need 1 more vote."
         petitioner:
           no_vote: "First, vote for your own petition."
           vote: "Share this petition with your friends."
+          decision: "The petition has a decision. A moderator will resolve it soon."
         user:
           no_vote: "Support this petition by clicking 'Vote'."
           vote: "Share this petition with your friends."
-        guest:
-          all: "Join Civically to support this petition."
+        guest: "Join Civically to support this petition."
       notification:
         accepted: "{{description}}"
         rejected: "{{description}}"

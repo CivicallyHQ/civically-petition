@@ -15,6 +15,8 @@ export default Ember.Component.extend({
   @computed('topic.petition_status')
   hasDecision: (status) => status === 'accepted' || status === 'rejected',
 
+  resolved: Ember.computed.equal('topic.petition_status', 'resolved'),
+
   @computed('hasDecision', 'reachedThreshold')
   resolutionIsValid: (hasDecision, reachedThreshold) => hasDecision && reachedThreshold,
 
@@ -45,56 +47,79 @@ export default Ember.Component.extend({
     return customMessages && customMessages['info'];
   },
 
-  getMessage(userType, type = 'all') {
-    const customMessages = this.get('topic.petition_messages');
-    let message = I18n.t(`petition.message.${userType}.${type}`);
+  buildMessage(type = null, subtype = null, params = {}) {
+    let key = `petition.message.${type}`;
 
-    if (customMessages && customMessages[userType] && customMessages[userType][type]) {
-      message = customMessages[userType][type];
+    if (subtype) key += '.' + subtype;
+
+    let message = I18n.t(key, params);
+
+    const customMessages = this.get('topic.petition_messages');
+
+    if (customMessages && customMessages[type]) {
+      if (subtype) {
+        if (customMessages[type][subtype]) {
+          message = customMessages[type][subtype];
+        }
+      } else {
+        message = customMessages[type];
+      }
     }
 
     return message;
   },
 
   @on('didInsertElement')
-  @observes('topic.user_voted', 'topic.closed', 'remainingVotes')
+  @observes('topic.user_voted', 'topic.closed', 'remainingVotes', 'hasDecision')
   setMessage() {
     const closed = this.get('topic.closed');
     const user = this.get('currentUser');
+    const hasDecision = this.get('hasDecision');
+    const resolved = this.get('resolved');
     let message;
 
     if (closed) {
-      message = I18n.t('petition.closed');
+      message = this.buildMessage('closed');
+    } else if (resolved) {
+      message = this.buildMessage('resolved');
+    } else if (hasDecision) {
+      const status = this.get('topic.petition_status');
+      message = this.buildMessage('decision', null, { status });
     } else if (user) {
       const topic = this.get('topic');
       const voted = this.get('topic.user_voted');
 
       let userType = user.id === topic.user_id ? 'petitioner' : 'user';
 
-      message = this.getMessage(userType, 'no_vote');
-
       if (voted) {
-        message = this.getMessage(userType, 'vote');
+        message = this.buildMessage(userType, 'vote');
 
-        let remainingMsg = this.remainingMsg();
-        if (remainingMsg) message += ` ${remainingMsg}`;
+        const remaining = this.get('remainingVotes');
+        let remainingMsg;
+
+        if (remaining > 1) {
+          remainingMsg = this.buildMessage('remaining', 'multiple', { remaining });
+        } else if (remaining === 1) {
+          remainingMsg = this.buildMessage('remaining', 'single', { remaining });
+        }
+
+        if (remainingMsg) {
+          message += ` ${remainingMsg}`;
+        }
+      } else {
+        message = this.buildMessage(userType, 'no_vote');
       }
+
     } else {
-      message = this.getMessage('guest');
+      message = this.buildMessage('guest');
     }
 
     cookAsync(message).then((cooked) => this.set('cookedMessage', cooked));
   },
 
   remainingMsg() {
-    const remaining = this.get('remainingVotes');
     let remainingMsg;
 
-    if (remaining > 1) {
-      remainingMsg = I18n.t('petition.message.remaining.multiple', { remaining })
-    } else if (remaining === 1) {
-      remainingMsg = I18n.t('petition.message.remaining.single', { remaining });
-    }
 
     return remainingMsg;
   },
