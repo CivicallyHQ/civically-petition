@@ -1,0 +1,55 @@
+fr:
+  js:
+    filters:
+      petitions:
+        title: "Pétitions"
+        help: "Liste des dernières pétitions."
+    notifications:
+      alt:
+        petition:
+          notification:
+            accepted: "Accepté"
+            rejected: "Rejeté"
+            open: "Ouvrir"
+    petition:
+      category:
+        label: "La catégorie est utilisée pour les pétitions"
+        vote_threshold: "Seuil de vote pour les pétitions de cette catégorie"
+      invite: "Inviter les gens à voter"
+      remove: "retirer la pétition"
+      accept: "Accepter la pétition"
+      reject: "Rejeter la pétition"
+      open: "Pétition ouverte"
+      status:
+        label: "Statut"
+      place:
+        label: "Place"
+      info: "Plus d'informations"
+      message:
+        decision: "Cette pétition a été {{status}}. Un modérateur va le résoudre sous peu."
+        resolved: "Cette pétition est résolue."
+        closed: "Cette pétition est fermée."
+        remaining:
+          multiple: "Nous avons besoin de {{restants}} plus de votes."
+          single: "Nous avons besoin d'1 vote supplémentaire."
+        petitioner:
+          no_vote: "Tout d'abord, votez pour votre propre pétition."
+          vote: "Partagez cette pétition avec vos amis."
+          decision: "La pétition a une décision. Un modérateur va le résoudre bientôt."
+        user:
+          no_vote: "Soutenez cette pétition en cliquant sur \"Voter\"."
+          vote: "Partagez cette pétition avec vos amis."
+        guest: "Rejoignez Civically pour soutenir cette pétition."
+      notification:
+        accepted: "{{description}}"
+        rejected: "{{description}}"
+        open: "{{description}}"
+      resolution:
+        action: "Résoudre la pétition"
+        force: "Force la résolution de la pétition."
+        invalid: "Cette pétition a une décision, mais n'a pas atteint son seuil de vote."
+      similar:
+        title: "Pétitions"
+        identical: "Identique"
+        no_results: "Pas de pétitions similaires"
+        invalid: "Il y a une pétition identique"

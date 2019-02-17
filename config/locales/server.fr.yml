@@ -1,0 +1,20 @@
+fr:
+  petition:
+    status:
+      accepted: "Accepté"
+      rejected: "Rejeté"
+      open: "Ouvert"
+    error:
+      title: "Une pétition doit avoir un titre"
+      id: "Une pétition doit avoir un identifiant"
+
+  system_messages:
+    petition_status_changed:
+      title: "\"%{title}\" pétition a été %{status}"
+      subject_template: "\"%{title}\" pétition a été %{status}"
+      text_body_template: |
+        Une pétition pour laquelle vous avez voté a été %{status}.
+
+        "%{title}" était %{status} sur %{time} .
+
+        Accédez à la [%{title}rubrique] (%{url}) pour en savoir plus.
